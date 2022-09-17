@@ -14,22 +14,24 @@ export class DevicesComponent implements OnInit {
     private router: Router
   ) {}
 
+  clearData(): void {
+    localStorage.removeItem('accessToken');
+    this.router.navigate(['/login']);
+    this.devices = [];
+  }
+
   ngOnInit(): void {
     this.devicesService.getDevices().subscribe({
       next: (res: any) => {
         this.devices = res.data.metering_devices.data;
       },
       error: () => {
-        localStorage.removeItem('accessToken');
-        this.router.navigate(['/login']);
-        this.devices = [];
+        this.clearData()
       },
     });
   }
 
   handleClickLogout(): void {
-    localStorage.removeItem('accessToken');
-    this.router.navigate(['/login']);
-    this.devices = [];
+    this.clearData()
   }
 }
